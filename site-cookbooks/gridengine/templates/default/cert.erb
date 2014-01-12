@@ -1,0 +1,31 @@
+[ req ]
+default_bits = 2048
+encrypt_key = no
+distinguished_name = req_dn
+x509_extensions = cert_type
+prompt = no
+
+[ req_dn ]
+# country (2 letter code)
+#C=US
+
+# State or Province Name (full name)
+#ST=Massachusetts
+
+# Locality Name (eg. city)
+#L=Cambridge
+
+# Organization (eg. company)
+#O=Cloud Company
+
+# Organizational Unit Name (eg. section)
+OU=none
+
+# Common Name (*.example.com is also possible)
+CN=<%= @host %>
+
+# E-mail contact
+emailAddress=noreply@noreply.org
+
+[ cert_type ]
+nsCertType = server

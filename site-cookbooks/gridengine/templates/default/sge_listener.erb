@@ -1,0 +1,66 @@
+var https = require("https");
+var querystring = require("querystring");
+var url = require("url");
+var fs = require("fs");
+
+var server = https.createServer({
+        key: fs.readFileSync('/root/masternode.key'),
+        cert: fs.readFileSync('/root/masternode.crt')
+      },
+      function(req, res) {
+    switch (url.parse(req.url).pathname) {
+        case '/pushthekey':
+            append_file(req, res);
+            break;
+        default:
+            show_404(req, res);
+            break;
+    }
+});
+
+server.listen(10111);
+
+/*
+ * Handle post of public key
+ */
+function append_file(req, res) {
+    var queryData = "";
+
+    if(req.method == 'POST') {
+        req.on('data', function(data) {
+            queryData += data;
+            if(queryData.length > 1e6) {
+                queryData = "";
+                res.writeHead(413, {'Content-Type': 'text/plain'});
+                req.connection.destroy();
+            }
+        });
+
+        req.on('end', function() {
+            var object_key = JSON.parse(JSON.stringify(querystring.parse(queryData)));
+            if(object_key.key == '<%= @token_key %>'){
+            var public_key = fs.createWriteStream('/root/.ssh/authorized_keys', {'flags': 'a'});
+            public_key.write(object_key.input + "\n");
+            res.writeHead(200,"Thanks I got it!",{'Content-Type': 'text/plain'});
+            res.end();
+            } else {
+            res.writeHead(200,"Invalid KEY Sorry!",{'Content-Type': 'text/plain'});
+            res.end();
+            }
+
+        });
+
+    } else {
+        res.writeHead(405, {'Content-Type': 'text/plain'});
+        res.end();
+    }
+}
+
+/*
+ * Handles page not found error
+ */
+function show_404(req, res) {
+    res.writeHead(404, {"Content-Type": "text/plain"});
+    res.write("Sorry Nothing Here");
+    res.end();
+}

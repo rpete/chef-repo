@@ -1,0 +1,5 @@
+maintainer       "Raymond Pete"
+maintainer_email "rpete@broadinstitute.org"
+description      "Installs/Configures GridEngine package"
+version          "0.0.1"
+supports         "ubuntu only ATM"
