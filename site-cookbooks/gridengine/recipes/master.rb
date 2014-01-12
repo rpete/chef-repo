@@ -193,6 +193,7 @@ bash "start_node.js" do
    curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
    ./configure
    make install
+   rm -Rf *
    curl https://npmjs.org/install.sh | sh
    npm install http-server
    npm install querystring
