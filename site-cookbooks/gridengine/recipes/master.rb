@@ -188,6 +188,7 @@ end
 
 bash "start_node.js" do
   code <<-EOC
+   ssh-keygen -t rsa -N "" -f /root/.ssh/sge_rsa
    apt-get -y install python-software-properties
    cd /tmp
    curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
