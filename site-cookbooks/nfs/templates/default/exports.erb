@@ -1,0 +1,5 @@
+<% node.nfs['shared_dirs'].each do |exports| -%>
+<% exports.each_pair do |dir,d| -%>
+<%= dir %>  <% node.nfs['clients'].each do |client| -%><%= client %>10.240.0.0/16(rw,sync,no_root_squash) <% end -%>
+<% end -%>
+<% end -%>
